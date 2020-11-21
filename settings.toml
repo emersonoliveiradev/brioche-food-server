@@ -1,0 +1,17 @@
+[default]
+SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
+SECRET_KEY = "iwillbeback"
+TITLE = "BriocheFood"
+EXTENSIONS = [
+  "briochefood.ext.appearance",
+  "briochefood.ext.database",
+  "briochefood.ext.migration",
+  "briochefood.ext.auth",
+  "briochefood.ext.admin",  
+  "briochefood.ext.commands",
+  "briochefood.blueprints.webui",
+  "briochefood.blueprints.restapi",
+]
+
+[production]
+SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"

@@ -14,6 +14,8 @@ EXTENSIONS = [
   "briochefood.blueprints.restapi",
   "briochefood.ext.serialization",
 ]
+PAGARME_API_KEY = "ak_test_KYhYBf7mN1NYX5G92QcwQyTMRMtX7A"
+PAGARME_ENCRYPTATION_KEY = "ek_test_XpiTJcB0288PaEwxsxXsJgKWiPh3Ny"
 
 [production]
 SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"

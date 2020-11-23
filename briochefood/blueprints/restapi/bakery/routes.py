@@ -1,8 +1,10 @@
-from flask import abort
+from briochefood.blueprints.restapi import bank
+from flask import abort, current_app
 from flask_restful import Resource, request
 from briochefood.models import Bakery
 from briochefood.ext.database import db
 from briochefood.ext.serialization import BakerySchema
+import pagarme
 
 
 class BakeryResource(Resource):
@@ -15,13 +17,26 @@ class BakeryResource(Resource):
     def post(self):
         """Create a new bakery"""
         try:
+            pagarme.authentication_key(
+                current_app.config.get('PAGARME_API_KEY'))
             schema = BakerySchema()
             data = schema.load(request.get_json(force=True))
-            bakery = Bakery(name=data['name'], cnpj=data['cnpj'],
+            recipient = {
+                'anticipatable_volume_percentage': '80',
+                'automatic_anticipation_enabled': 'true',
+                'transfer_day': '5',
+                'transfer_enabled': 'true',
+                'transfer_interval': 'weekly',
+                'bank_account': data['bank']
+            }
+
+            rec = pagarme.recipient.create(recipient)
+            return rec
+            '''bakery = Bakery(name=data['name'], cnpj=data['cnpj'],
                             email=data['email'], password=data['password'],
                             address_id=2)
             db.session.add(bakery)
-            db.session.commit()
+            db.session.commit()'''
             return schema.jsonify(bakery)
         except Exception as e:
             abort(400, "Registration not performed. " + str(e))

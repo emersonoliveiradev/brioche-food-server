@@ -1,6 +1,6 @@
 from marshmallow import validate, ValidationError
 from flask_marshmallow import Marshmallow
-from briochefood.models import Address, Bakery, Product, User
+from briochefood.models import Address, Bakery, Bank, Product, User
 
 ma = Marshmallow()
 
@@ -26,6 +26,26 @@ class AddressSchema(ma.Schema):
     updated_at = ma.DateTime()
 
 
+class BankSchema(ma.Schema):
+    class Meta:
+        model = Bank
+
+    id = ma.Int()
+    agencia = ma.Str(required=True, validate=validate.Length(
+        max=5))
+    agencia_dv = ma.Str(validate=validate.Length(max=1))
+    bank_code = ma.Str(required=True, validate=validate.Length(max=3))
+    conta = ma.Str(required=True, validate=validate.Length(max=13))
+    conta_dv = ma.Str(
+        required=True, validate=validate.Length(min=1, max=2))
+    document_number = ma.Str(
+        required=True, validate=validate.Length(max=18))
+    legal_name = ma.Str(
+        required=True, validate=validate.Length(max=30))
+    created_at = ma.DateTime()
+    updated_at = ma.DateTime()
+
+
 class BakerySchema(ma.Schema):
     class Meta:
         model = Bakery
@@ -40,6 +60,7 @@ class BakerySchema(ma.Schema):
     status = ma.Str(validate=validate.Length(max=20))
     address_id = ma.Int()
     address = ma.Nested(AddressSchema(), required=True)
+    bank = ma.Nested(BankSchema(), required=True)
     created_at = ma.DateTime()
     updated_at = ma.DateTime()
 

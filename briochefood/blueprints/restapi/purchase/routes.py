@@ -1,6 +1,7 @@
-from flask import abort, jsonify
-from flask_restful import Resource
+from flask import abort, current_app, jsonify
+from flask_restful import Resource, request
 from briochefood.models import Purchase
+import pagarme
 
 
 class PurchaseResource(Resource):
@@ -9,6 +10,12 @@ class PurchaseResource(Resource):
         return jsonify(
             {"purchases": [purchase.to_dict() for purchase in purchases]}
         )
+
+    def post(self):
+        pagarme.authentication_key(current_app.config.get('PAGARME_API_KEY'))
+        data = request.get_json(force=True) or abort(400, "Invalid request")
+        trx = pagarme.transaction.create(data)
+        return jsonify({"Checkout": trx})
 
 
 class PurchaseItemResource(Resource):

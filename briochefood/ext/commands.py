@@ -1,6 +1,5 @@
 from briochefood.ext.database import db
-#from briochefood.ext.auth import create_user
-from briochefood.models import Address, Bakery, Cart, Delivery, Order, Product, Purchase, User, User_Address
+from briochefood.models import Address, Bakery, Bank, Cart, Delivery, Order, Product, Purchase, User, User_Address
 from datetime import datetime
 
 
@@ -21,10 +20,16 @@ def populate_db():
                 city='Porto Alegre', cep='90035170', state='RS', country='Brasil', created_at=datetime.now(), updated_at=None),
         Address(id=2, street='Gonçalo Carvalho', number=66, complement='Apartamento', district='Floresta',
                 city='Porto Alegre', cep='90035170', state='RS', country='Brasil', created_at=datetime.now(), updated_at=None),
+
+        Bank(id=1, agencia='0932', agencia_dv='0', bank_code='341', conta='58054', conta_dv='1', document_number='26268738888',
+             legal_name='Pão dourado1', created_at=datetime.now(), updated_at=None),
+        Bank(id=2, agencia='0932', agencia_dv='0', bank_code='341', conta='58054', conta_dv='1', document_number='26268738888',
+             legal_name='Pão dourado2', created_at=datetime.now(), updated_at=None),
+
         Bakery(id=1, name='Pão Dourado', cnpj='1234567890123', email='paodourado@gmail.com',
-               password='12345', phone='5538998411815', status='ACTIVE', address_id='1', created_at=datetime.now(), updated_at=None),
+               password='12345', phone='5538998411815', status='ACTIVE', bank_id=1, address_id='1', created_at=datetime.now(), updated_at=None),
         Bakery(id=2, name='Sonho da Manhã', cnpj='1234567891234', email='sonhodamanha@gmail.com',
-               password='12345', phone='5538998411815', status='ACTIVE', address_id='1', created_at=datetime.now(), updated_at=None),
+               password='12345', phone='5538998411815', status='ACTIVE', bank_id=2, address_id='1', created_at=datetime.now(), updated_at=None),
         Product(id=1, name='Pão Francês', description='Pão comum a base de farinha, sal, água e fermento.',
                 price=0.65, quantity=120, status='ACTIVE', bakery_id=1, created_at=datetime.now(), updated_at=None),
         Product(id=2, name='Pão Doce', description='Pão doce de textura macia e sabor de canela.',

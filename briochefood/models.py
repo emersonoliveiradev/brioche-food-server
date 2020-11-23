@@ -49,6 +49,21 @@ class User_Address(db.Model, SerializerMixin):
         "users_addresses", cascade="all, delete-orphan"))
 
 
+class Bank(db.Model, SerializerMixin):
+    __tablename__ = 'banks'
+    id = db.Column(db.Integer, primary_key=True)
+    agencia = db.Column(db.String(5), nullable=False)
+    agencia_dv = db.Column(db.String(1))
+    bank_code = db.Column(db.String(3), nullable=False)
+    conta = db.Column(db.String(13), nullable=False)
+    conta_dv = db.Column(db.String(2), nullable=False)
+    document_number = db.Column(db.String(18), nullable=False)
+    legal_name = db.Column(db.String(30), nullable=False)
+    created_at = db.Column(
+        db.DateTime, default=datetime.datetime.now, nullable=False)
+    updated_at = db.Column(db.DateTime, default=None)
+
+
 class Bakery(db.Model, SerializerMixin):
     __tablename__ = 'bakeries'
     id = db.Column(db.Integer, primary_key=True)
@@ -59,10 +74,12 @@ class Bakery(db.Model, SerializerMixin):
     phone = db.Column(db.String(13))
     status = db.Column(db.String(20), db.Enum(
         'ACTIVE', 'INACTIVE', 'BLOCKED'), default='ACTIVE', nullable=False)
+    bank_id = db.Column(db.Integer, db.ForeignKey(
+        'banks.id'), unique=True, nullable=False)
+    bank = db.relationship("Bank", backref="bakeries")
     address_id = db.Column(db.Integer, db.ForeignKey(
         'addresses.id'), nullable=False)
     address = db.relationship("Address", backref="bakeries")
-
     created_at = db.Column(
         db.DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=None)

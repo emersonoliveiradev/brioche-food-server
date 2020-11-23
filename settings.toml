@@ -2,6 +2,7 @@
 SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
 SECRET_KEY = "iwillbeback"
 TITLE = "BriocheFood"
+DEBUG = "TRUE"
 EXTENSIONS = [
   "briochefood.ext.appearance",
   "briochefood.ext.database",
@@ -11,6 +12,7 @@ EXTENSIONS = [
   "briochefood.ext.commands",
   "briochefood.blueprints.webui",
   "briochefood.blueprints.restapi",
+  "briochefood.ext.serialization",
 ]
 
 [production]

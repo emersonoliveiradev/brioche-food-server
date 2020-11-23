@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_restful import Api
-from .address.routes import AddressResource
+from .address.routes import AddressResource, AddressItemResource
 from .product.routes import ProductResource, ProductItemResource
 from .purchase.routes import PurchaseResource, PurchaseItemResource
 from .user.routes import UserResource, UserItemResource
@@ -11,6 +11,7 @@ from .delivery.routes import DeliveryResource, DeliveryItemResource
 bp = Blueprint("restapi", __name__, url_prefix="/api/v1")
 api = Api(bp)
 api.add_resource(AddressResource, "/addresses/")
+api.add_resource(AddressItemResource, "/address/<address_id>")
 
 api.add_resource(BakeryResource, "/bakeries/")
 api.add_resource(BakeryItemResource, "/bakery/<bakery_id>")

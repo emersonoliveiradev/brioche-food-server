@@ -1,39 +1,19 @@
-from flask import abort, jsonify
-from flask_restful import Resource, fields, marshal_with
+from flask import abort
+from flask_restful import Resource
 from briochefood.models import Address
+from briochefood.ext.serialization import AddressSchema
 
 
-user_fields = {
-    "id": fields.Integer,
-    "name": fields.String(),
-    "lastname": fields.String,    
-    "email": fields.String,
-    "cpf": fields.String,
-    "phone": fields.String,
-    "status": fields.String,       
-    "createdAt": fields.DateTime(attribute='created_at', dt_format='iso8601'), 
-    "updatedAt": fields.DateTime(attribute='updated_at', dt_format='iso8601') 
-}
+class AddressResource(Resource):
+    def get(self):
+        schema = AddressSchema(many=True)
+        addresses = Address.query.all() or abort(204)
+        return schema.jsonify(addresses)
 
-address_fields = {
-    'id': fields.Integer,
-    'street': fields.String,    
-    'number': fields.Integer,
-    'complement': fields.String,
-    'district': fields.String,
-    'city': fields.String,
-    'cep': fields.String,
-    'state': fields.String,
-    'country': fields.String,    
-    "createdAt": fields.DateTime(attribute='created_at', dt_format='iso8601'), 
-    "updatedAt": fields.DateTime(attribute='updated_at', dt_format='iso8601'), 
-    'user': fields.Nested(user_fields)
-}
 
-class AddressResource(Resource):    
-    @marshal_with(address_fields)
-    def get(self):                
-        addresses = Address.query.all() or abort(204)      
-        return addresses 
-        
-
+class AddressItemResource(Resource):
+    def get(self, address_id):
+        schema = AddressSchema(many=False)
+        addresses = Address.query.filter_by(
+            id=address_id).first() or abort(404)
+        return schema.jsonify(addresses)

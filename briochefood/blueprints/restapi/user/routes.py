@@ -1,43 +1,20 @@
-from flask import abort, jsonify
-from flask_restful import Resource, fields, marshal_with
+from flask import abort
+from flask_restful import Resource
 from briochefood.models import User
+from briochefood.ext.serialization import UserSchema
 
-
-address_fields = {
-    'id': fields.Integer,
-    'street': fields.String,    
-    'number': fields.Integer,
-    'complement': fields.String,
-    'district': fields.String,
-    'city': fields.String,
-    'cep': fields.String,
-    'state': fields.String,
-    'country': fields.String,    
-    "createdAt": fields.DateTime(attribute='created_at', dt_format='iso8601'), 
-    "updatedAt": fields.DateTime(attribute='updated_at', dt_format='iso8601'),     
-}
-
-user_fields = {
-    "id": fields.Integer,
-    "name": fields.String(),
-    "lastname": fields.String,    
-    "email": fields.String,
-    "cpf": fields.String,
-    "phone": fields.String,
-    "status": fields.String,       
-    "createdAt": fields.DateTime(attribute='created_at', dt_format='iso8601'), 
-    "updatedAt": fields.DateTime(attribute='updated_at', dt_format='iso8601'), 
-    'address': fields.Nested(address_fields)
-}
 
 class UserResource(Resource):
-    @marshal_with(user_fields)
-    def get(self):        
-        users = User.query.all() or abort(204)        
-        return users
+    def get(self):
+        """Get all users"""
+        users = User.query.all() or abort(204)
+        schema = UserSchema(many=True)
+        return schema.jsonify(users)
 
 
 class UserItemResource(Resource):
     def get(self, user_id):
+        """Get user"""
         user = User.query.filter_by(id=user_id).first() or abort(404)
-        return jsonify(user.to_dict())
+        schema = UserSchema(many=False)
+        return schema.jsonify(user)

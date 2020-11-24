@@ -21,22 +21,16 @@ def populate_db():
         Address(id=2, street='Gonçalo Carvalho', number=66, complement='Apartamento', district='Floresta',
                 city='Porto Alegre', cep='90035170', state='RS', country='Brasil', created_at=datetime.now(), updated_at=None),
 
-        Bank(id=1, agencia='0932', agencia_dv='0', bank_code='341', conta='58054', conta_dv='1', document_number='26268738888',
-             legal_name='Pão dourado1', created_at=datetime.now(), updated_at=None),
-        Bank(id=2, agencia='0932', agencia_dv='0', bank_code='341', conta='58054', conta_dv='1', document_number='26268738888',
-             legal_name='Pão dourado2', created_at=datetime.now(), updated_at=None),
+        Bank(id=1, pagarme_bank_account_id=18494661,
+             created_at=datetime.now(), updated_at=None),
 
-        Bakery(id=1, name='Pão Dourado', cnpj='1234567890123', email='paodourado@gmail.com',
+        Bakery(id=1, name='Pão Dourado', pagarme_recipient_id='re_ckhv594pe0ozy0i9tctmr88cz', cnpj='1234567890123', email='paodourado@gmail.com',
                password='12345', phone='5538998411815', status='ACTIVE', bank_id=1, address_id='1', created_at=datetime.now(), updated_at=None),
-        Bakery(id=2, name='Sonho da Manhã', cnpj='1234567891234', email='sonhodamanha@gmail.com',
-               password='12345', phone='5538998411815', status='ACTIVE', bank_id=2, address_id='1', created_at=datetime.now(), updated_at=None),
         Product(id=1, name='Pão Francês', description='Pão comum a base de farinha, sal, água e fermento.',
                 price=0.65, quantity=120, status='ACTIVE', bakery_id=1, created_at=datetime.now(), updated_at=None),
         Product(id=2, name='Pão Doce', description='Pão doce de textura macia e sabor de canela.',
                 price=0.85, quantity=90, status='ACTIVE', bakery_id=1, created_at=datetime.now(), updated_at=None),
-        Product(id=3, name='Pão Francês', description='Pão comum a base de farinha, sal, água e fermento.',
-                price=0.65, quantity=120, status='ACTIVE', bakery_id=2, created_at=datetime.now(), updated_at=None),
-        Product(id=4, name='Pão Doce Especial', description='Pão doce de textura macia e sabor de canela com geléia.',
+        Product(id=3, name='Pão Doce Especial', description='Pão doce de textura macia e sabor de canela com geléia.',
                 price=0.65, quantity=120, status='ACTIVE', bakery_id=1, created_at=datetime.now(), updated_at=None),
         User(id=1, name='Emerson', lastname='Oliveira', email='emersonoliveiradev@gmail.com', password="12345",
              cpf="21496453000", phone='5538998411815', status='ACTIVE', created_at=datetime.now(), updated_at=None),
@@ -66,3 +60,11 @@ def init_app(app):
     """Add multiple commands in a bulk"""
     for command in [create_db, drop_db, populate_db]:
         app.cli.add_command(app.cli.command()(command))
+
+
+"""
+Bank(id=1, agencia='0932', agencia_dv='0', bank_code='341', conta='58054', conta_dv='1', document_number='26268738888',
+legal_name='Pão dourado1', created_at=datetime.now(), updated_at=None),
+Bank(id=2, agencia='0932', agencia_dv='0', bank_code='341', conta='58054', conta_dv='1', document_number='26268738888',
+legal_name='Pão dourado2', created_at=datetime.now(), updated_at=None),
+"""

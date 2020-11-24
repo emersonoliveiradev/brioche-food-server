@@ -31,6 +31,7 @@ class BankSchema(ma.Schema):
         model = Bank
 
     id = ma.Int()
+    pagarme_bank_account_id = ma.Str(validate=validate.Length(max=128))
     agencia = ma.Str(required=True, validate=validate.Length(
         max=5))
     agencia_dv = ma.Str(validate=validate.Length(max=1))
@@ -51,6 +52,7 @@ class BakerySchema(ma.Schema):
         model = Bakery
 
     id = ma.Int()
+    pagarme_recipient_id = ma.Str(validate=validate.Length(max=128))
     name = ma.Str(required=True, validate=validate.Length(min=2, max=128))
     cnpj = ma.Str(validate=validate.Length(min=13, max=13))
     email = ma.Str(required=True, validate=validate.Length(min=2, max=128))

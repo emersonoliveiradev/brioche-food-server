@@ -52,13 +52,8 @@ class User_Address(db.Model, SerializerMixin):
 class Bank(db.Model, SerializerMixin):
     __tablename__ = 'banks'
     id = db.Column(db.Integer, primary_key=True)
-    agencia = db.Column(db.String(5), nullable=False)
-    agencia_dv = db.Column(db.String(1))
-    bank_code = db.Column(db.String(3), nullable=False)
-    conta = db.Column(db.String(13), nullable=False)
-    conta_dv = db.Column(db.String(2), nullable=False)
-    document_number = db.Column(db.String(18), nullable=False)
-    legal_name = db.Column(db.String(30), nullable=False)
+    pagarme_bank_account_id = db.Column(
+        db.String(128), nullable=False)
     created_at = db.Column(
         db.DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=None)
@@ -67,6 +62,8 @@ class Bank(db.Model, SerializerMixin):
 class Bakery(db.Model, SerializerMixin):
     __tablename__ = 'bakeries'
     id = db.Column(db.Integer, primary_key=True)
+    pagarme_recipient_id = db.Column(
+        db.String(128), nullable=False, unique=True)
     name = db.Column(db.String(128), nullable=False)
     cnpj = db.Column(db.String(13), default=None, unique=True)
     email = db.Column(db.String(128), unique=True, nullable=False)
@@ -155,3 +152,14 @@ class Delivery(db.Model, SerializerMixin):
     created_at = db.Column(
         db.DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=None)
+
+
+"""
+agencia = db.Column(db.String(5), nullable=False)
+agencia_dv = db.Column(db.String(1))
+bank_code = db.Column(db.String(3), nullable=False)
+conta = db.Column(db.String(13), nullable=False)
+conta_dv = db.Column(db.String(2), nullable=False)
+document_number = db.Column(db.String(18), nullable=False)
+legal_name = db.Column(db.String(30), nullable=False)
+"""

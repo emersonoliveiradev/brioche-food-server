@@ -19,6 +19,9 @@ class User(db.Model, SerializerMixin):
         db.DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=None)
 
+    def __repr__(self):
+        return '{} - {}'.format(self.id, self.name)
+
 
 class Address(db.Model, SerializerMixin):
     __tablename__ = 'addresses'
@@ -36,6 +39,9 @@ class Address(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, default=None)
     user = db.relationship("User", secondary="users_addresses")
 
+    def __repr__(self):
+        return '{}'.format(self.id)
+
 
 class User_Address(db.Model, SerializerMixin):
     __tablename__ = 'users_addresses'
@@ -48,6 +54,9 @@ class User_Address(db.Model, SerializerMixin):
     address = db.relationship(Address, backref=db.backref(
         "users_addresses", cascade="all, delete-orphan"))
 
+    def __repr__(self):
+        return '{}'.format(self.id)
+
 
 class Bank(db.Model, SerializerMixin):
     __tablename__ = 'banks'
@@ -57,6 +66,9 @@ class Bank(db.Model, SerializerMixin):
     created_at = db.Column(
         db.DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=None)
+
+    def __repr__(self):
+        return '{} - {}'.format(self.id, self.pagarme_bank_account_id)
 
 
 class Bakery(db.Model, SerializerMixin):
@@ -81,6 +93,9 @@ class Bakery(db.Model, SerializerMixin):
         db.DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=None)
 
+    def __repr__(self):
+        return '{} - {}'.format(self.id, self.name)
+
 
 class Product(db.Model, SerializerMixin):
     __tablename__ = 'products'
@@ -99,6 +114,9 @@ class Product(db.Model, SerializerMixin):
         db.DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=None)
 
+    def __repr__(self):
+        return '{} - {}'.format(self.id, self.title)
+
 
 class Cart(db.Model, SerializerMixin):
     __tablename__ = 'carts'
@@ -110,6 +128,9 @@ class Cart(db.Model, SerializerMixin):
     created_at = db.Column(
         db.DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=None)
+
+    def __repr__(self):
+        return '{}'.format(self.id)
 
 
 class Order(db.Model, SerializerMixin):
@@ -123,6 +144,9 @@ class Order(db.Model, SerializerMixin):
         'products.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.now)
     updated_at = db.Column(db.DateTime, default=None)
+
+    def __repr__(self):
+        return '{}'.format(self.id)
 
 
 class Purchase(db.Model, SerializerMixin):
@@ -139,6 +163,9 @@ class Purchase(db.Model, SerializerMixin):
         db.DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=None)
 
+    def __repr__(self):
+        return '{}'.format(self.id)
+
 
 class Delivery(db.Model, SerializerMixin):
     __tablename__ = 'deliveries'
@@ -153,6 +180,9 @@ class Delivery(db.Model, SerializerMixin):
     created_at = db.Column(
         db.DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=None)
+
+    def __repr__(self):
+        return '{}'.format(self.id)
 
 
 """

@@ -1,6 +1,7 @@
 [default]
 SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
 SECRET_KEY = "iwillbeback"
+JWT_SECRET_KEY = "iwillbebackagain"
 TITLE = "BriocheFood"
 DEBUG = "TRUE"
 EXTENSIONS = [
@@ -8,7 +9,8 @@ EXTENSIONS = [
   "briochefood.ext.database",
   "briochefood.ext.migration",
   "briochefood.ext.auth",
-  "briochefood.ext.admin",  
+  "briochefood.ext.auth_jwt",
+  "briochefood.ext.admin",
   "briochefood.ext.commands",
   "briochefood.blueprints.webui",
   "briochefood.blueprints.restapi",

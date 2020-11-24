@@ -1,4 +1,4 @@
-from flask_simplelogin import SimpleLogin, login_required
+from flask_simplelogin import SimpleLogin
 
 
 def verify_login(user):

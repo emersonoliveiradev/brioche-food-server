@@ -1,4 +1,4 @@
-from flask import abort, jsonify
+from flask import abort
 from flask_restful import Resource
 from briochefood.models import Delivery
 from briochefood.ext.serialization import DeliverySchema

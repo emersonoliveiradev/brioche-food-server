@@ -8,7 +8,6 @@ def index():
 
 
 def product(product_id):
-    product = Product.query.filter_by(id=product_id).first() or abort(
-        404, "produto nao encontrado"
-    )
+    product = Product.query.filter_by(
+        id=product_id).first() or abort(404, "Item not found")
     return render_template("product.html", product=product)

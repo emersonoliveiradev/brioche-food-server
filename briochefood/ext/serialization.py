@@ -39,10 +39,13 @@ class BankSchema(ma.Schema):
     conta = ma.Str(required=True, validate=validate.Length(max=13))
     conta_dv = ma.Str(
         required=True, validate=validate.Length(min=1, max=2))
+    document_type = ma.Str(validate=validate.Length(max=30))
     document_number = ma.Str(
         required=True, validate=validate.Length(max=18))
     legal_name = ma.Str(
         required=True, validate=validate.Length(max=30))
+    type = ma.Str(validate=validate.Length(max=30))
+    charge_transfer_fees = ma.Boolean()
     created_at = ma.DateTime()
     updated_at = ma.DateTime()
 
@@ -72,10 +75,11 @@ class ProductSchema(ma.Schema):
         model = Product
 
     id = ma.Int()
-    name = ma.Str(required=True, validate=validate.Length(min=1, max=255))
+    title = ma.Str(required=True, validate=validate.Length(min=1, max=255))
     description = ma.Str()
-    price = ma.Float()
+    unit_price = ma.Float()
     quantity = ma.Int()
+    tangible = ma.Boolean()
     status = ma.Str(validate=validate.Length(max=20))
     bakery_id = ma.Int()
     bakery = ma.Nested(BakerySchema())
@@ -95,5 +99,18 @@ class UserSchema(ma.Schema):
     status = ma.Str(validate=validate.Length(max=20))
     phone = ma.Str(validate=validate.Length(min=13, max=13))
     address = ma.Nested(AddressSchema(many=True))
+    created_at = ma.DateTime()
+    updated_at = ma.DateTime()
+
+
+class DeliverySchema(ma.Schema):
+    class Meta:
+        model = Address
+
+    id = ma.Int()
+    status = ma.Str(required=True, validate=validate.Length(max=20))
+    note = ma.Str(validate=validate.Length(max=200))
+    purchase_id = ma.Int(required=True)
+    address_id = ma.Int(required=True)
     created_at = ma.DateTime()
     updated_at = ma.DateTime()

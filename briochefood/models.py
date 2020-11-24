@@ -85,10 +85,11 @@ class Bakery(db.Model, SerializerMixin):
 class Product(db.Model, SerializerMixin):
     __tablename__ = 'products'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(225), nullable=False)
+    title = db.Column(db.String(225), nullable=False)
     description = db.Column(db.Text)
-    price = db.Column(db.Numeric(), default=0)
+    unit_price = db.Column(db.Numeric(), default=0)
     quantity = db.Column(db.Integer, default=0)
+    tangible = db.Column(db.Boolean, default=True, nullable=False)
     status = db.Column(db.String(20), db.Enum(
         'ACTIVE', 'INACTIVE'), default='ACTIVE', nullable=False)
     bakery_id = db.Column(db.Integer, db.ForeignKey(

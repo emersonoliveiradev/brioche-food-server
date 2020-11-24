@@ -6,7 +6,7 @@ import pagarme
 
 class PurchaseResource(Resource):
     def get(self):
-        purchases = Purchase.query.all() or abort(204)
+        purchases = Purchase.query.all() or abort(204, "No items found")
         return jsonify(
             {"purchases": [purchase.to_dict() for purchase in purchases]}
         )
@@ -21,5 +21,5 @@ class PurchaseResource(Resource):
 class PurchaseItemResource(Resource):
     def get(self, purchase_id):
         purchase = Purchase.query.filter_by(
-            id=purchase_id).first() or abort(404)
+            id=purchase_id).first() or abort(404, "Item not found")
         return jsonify(purchase.to_dict())

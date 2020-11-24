@@ -1,4 +1,4 @@
-from flask import abort, current_app, session
+from flask import abort, current_app
 from flask_restful import Resource, request
 from briochefood.ext.database import db
 from briochefood.ext.serialization import BakerySchema
@@ -10,7 +10,7 @@ import pagarme
 class BakeryResource(Resource):
     def get(self):
         """Get all bakeries"""
-        bakeries = Bakery.query.all() or abort(204)
+        bakeries = Bakery.query.all() or abort(204, "No items found")
         schema = BakerySchema(many=True)
         return schema.jsonify(bakeries)
 
@@ -37,7 +37,6 @@ class BakeryResource(Resource):
             db.session.add(address)
             db.session.flush()
 
-            print("okkk1")
             recipient = {
                 'anticipatable_volume_percentage': '80',
                 'automatic_anticipation_enabled': 'true',
@@ -49,7 +48,7 @@ class BakeryResource(Resource):
             recipient = pagarme.recipient.create(recipient) or abort(
                 400, 'Bank data denied. Check your data.'
             )
-            print(recipient['bank_account']['id'])
+
             bank = Bank(
                 pagarme_bank_account_id=recipient['bank_account']['id'])
             db.session.add(bank)
@@ -77,6 +76,7 @@ class BakeryResource(Resource):
 class BakeryItemResource(Resource):
     def get(self, bakery_id):
         """Get bakery"""
-        bakery = Bakery.query.filter_by(id=bakery_id).first() or abort(404)
+        bakery = Bakery.query.filter_by(
+            id=bakery_id).first() or abort(404, "Item not found")
         schema = BakerySchema(many=False)
         return schema.jsonify(bakery)

@@ -126,7 +126,9 @@ class Cart(db.Model, SerializerMixin):
     note = db.Column(db.String(200))
     bakery_id = db.Column(db.Integer, db.ForeignKey(
         'bakeries.id'), nullable=False)
+    bakery = db.relationship("Bakery", backref="carts")
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship("User", backref="carts")
     created_at = db.Column(
         db.DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=None)
@@ -139,8 +141,7 @@ class Order(db.Model, SerializerMixin):
     __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer(), nullable=False)
-    price = db.Column(db.Numeric(), nullable=False)
-    note = db.Column(db.String(200))
+    unit_price = db.Column(db.Numeric(), nullable=False)
     cart_id = db.Column(db.Integer, db.ForeignKey('carts.id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey(
         'products.id'), nullable=False)
@@ -161,6 +162,7 @@ class Purchase(db.Model, SerializerMixin):
     status = db.Column(db.String(20), db.Enum(
         'PAID', 'CANCELED', 'REVERSAL'), default='PAID', nullable=False)
     cart_id = db.Column(db.Integer, db.ForeignKey('carts.id'), nullable=False)
+    cart = db.relationship("Cart", backref="purchases")
     created_at = db.Column(
         db.DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=None)

@@ -1,6 +1,6 @@
 from marshmallow import validate
 from flask_marshmallow import Marshmallow
-from briochefood.models import Address, Bakery, Bank, Product, User
+from briochefood.models import Address, Bakery, Bank, Cart, Product, Purchase, User
 
 ma = Marshmallow()
 
@@ -123,6 +123,20 @@ class UserSchema(ma.Schema):
     updated_at = ma.DateTime()
 
 
+class CartSchema(ma.Schema):
+    class Meta:
+        model = Cart
+
+    id = ma.Int()
+    note = ma.Str()
+    bakery_id = ma.Int(required=True)
+    bakery = ma.Nested(BakerySchema())
+    user_id = ma.Int()
+    user = ma.Nested(UserSchema())
+    created_at = ma.DateTime()
+    updated_at = ma.DateTime()
+
+
 class DeliverySchema(ma.Schema):
     class Meta:
         model = Address
@@ -143,3 +157,73 @@ class LoginSchema(ma.Schema):
     email = ma.Str(required=True, validate=validate.Length(min=2, max=128))
     password = ma.Str(required=True, validate=validate.Length(
         min=6, max=128))
+
+
+class CustomerSchema(ma.Schema):
+    external_id = ma.Str(
+        required=True, validate=validate.Length(min=1, max=128))
+    name = ma.Str(required=True, validate=validate.Length(min=2, max=128))
+    type = ma.Str(required=True, validate=validate.Length(min=2, max=128))
+    country = ma.Str(required=True, validate=validate.Length(min=2, max=128))
+    email = ma.Str(required=True, validate=validate.Length(min=2, max=128))
+    documents = ma.Raw()
+    phone_numbers = ma.Raw()
+    birthday = ma.Str(required=True, validate=validate.Length(min=8, max=10))
+
+
+class BillingShippingAddressSchema(ma.Schema):
+    country = ma.Str(required=True, validate=validate.Length(max=128))
+    state = ma.Str(required=True, validate=validate.Length(max=2))
+    city = ma.Str(required=True, validate=validate.Length(max=128))
+    neighborhood = ma.Str(required=True, validate=validate.Length(max=128))
+    street = ma.Str(required=True, validate=validate.Length(max=128))
+    street_number = ma.Str(required=True, validate=validate.Length(max=15))
+    zipcode = ma.Str(validate=validate.Length(min=8, max=8))
+
+
+class BillingSchema(ma.Schema):
+    name = ma.Str(required=True, validate=validate.Length(max=128))
+    address = ma.Nested(BillingShippingAddressSchema())
+
+
+class ShippinSchema(ma.Schema):
+    name = ma.Str(required=True, validate=validate.Length(max=128))
+    fee = ma.Int(required=True,)
+    delivery_date = ma.Str(
+        required=True, validate=validate.Length(min=8, max=10))
+    expedited = ma.Boolean()
+    address = ma.Nested(BillingShippingAddressSchema())
+
+
+class ItemsSchema(ma.Schema):
+    id = ma.Str(required=True)
+    title = ma.Str(required=True, validate=validate.Length(min=1, max=255))
+    unit_price = ma.Int(required=True)
+    quantity = ma.Int(required=True)
+    tangible = ma.Boolean(required=True)
+
+
+class PurchaseSchema(ma.Schema):
+    class Meta:
+        model = Purchase
+
+    id = ma.Int()
+    bakery_id = ma.Int()
+    cart = ma.Nested(CartSchema())
+    user_id = ma.Int()
+    note = ma.Str(validate=validate.Length(max=128))
+    amount = ma.Int(required=True,)
+    card_number = ma.Str(
+        required=True, validate=validate.Length(min=16, max=16))
+    card_cvv = ma.Str(required=True, validate=validate.Length(min=1, max=3))
+    card_expiration_date = ma.Str(
+        required=True, validate=validate.Length(min=4, max=4))
+    card_holder_name = ma.Str(
+        required=True, validate=validate.Length(min=1, max=128))
+    customer = ma.Nested(CustomerSchema())
+    billing = ma.Nested(BillingSchema())
+    shipping = ma.Nested(ShippinSchema())
+    items = ma.Raw()
+    split_rules = ma.Raw()
+    created_at = ma.DateTime()
+    updated_at = ma.DateTime()

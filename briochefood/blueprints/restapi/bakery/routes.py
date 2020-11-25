@@ -21,7 +21,6 @@ class BakeryResource(Resource):
                 current_app.config.get('PAGARME_API_KEY'))
 
             schema = BakerySchema()
-
             data = schema.load(request.get_json(force=True))
 
             address = Address(
@@ -30,7 +29,7 @@ class BakeryResource(Resource):
                 complement=data['address'].get("complement", None),
                 district=data['address'].get("district", None),
                 city=data['address'].get("city", None),
-                cep=data['address']['cep'],
+                zipcode=data['address']['zipcode'],
                 state=data['address']['state'],
                 country=data['address']['country'],
             )
@@ -56,8 +55,7 @@ class BakeryResource(Resource):
 
             bakery = Bakery(pagarme_recipient_id=recipient['id'],
                             name=data['name'], cnpj=data['cnpj'],
-                            email=data['email'], password=data['password'],
-                            bank_id=bank.id,
+                            email=data['email'], bank_id=bank.id,
                             address_id=address.id) or abort(
                 400, 'Bakery data denied. Check your data.'
             )
@@ -78,5 +76,23 @@ class BakeryItemResource(Resource):
         """Get bakery"""
         bakery = Bakery.query.filter_by(
             id=bakery_id).first() or abort(404, "Item not found")
+        schema = BakerySchema(many=False)
+        return schema.jsonify(bakery)
+
+
+class BakeryDetailResource(Resource):
+    def get(self, bakery_id):
+        """Detail bakery"""
+        pagarme.authentication_key(
+            current_app.config.get('PAGARME_API_KEY'))
+
+        bakery = Bakery.query.filter_by(id=bakery_id).first() or abort(
+            404, "Item not found"
+        )
+
+        pagarme_recipient = pagarme.recipient.find_by(
+            {"id": bakery.pagarme_recipient_id})
+        bakery.pagarme_recipient = pagarme_recipient[0]
+
         schema = BakerySchema(many=False)
         return schema.jsonify(bakery)

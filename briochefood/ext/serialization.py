@@ -1,4 +1,4 @@
-from marshmallow import validate, ValidationError
+from marshmallow import validate
 from flask_marshmallow import Marshmallow
 from briochefood.models import Address, Bakery, Bank, Product, User
 
@@ -20,7 +20,7 @@ class AddressSchema(ma.Schema):
     district = ma.Str(validate=validate.Length(max=128))
     city = ma.Str(validate=validate.Length(max=128))
     state = ma.Str(required=True, validate=validate.Length(min=2, max=2))
-    cep = ma.Str(required=True, validate=validate.Length(min=8, max=8))
+    zipcode = ma.Str(required=True, validate=validate.Length(min=8, max=8))
     country = ma.Str(required=True, validate=validate.Length(max=128))
     created_at = ma.DateTime()
     updated_at = ma.DateTime()
@@ -48,6 +48,23 @@ class BankSchema(ma.Schema):
     charge_transfer_fees = ma.Boolean()
     created_at = ma.DateTime()
     updated_at = ma.DateTime()
+    date_created = ma.Str()
+
+
+class BakeryPagarmeRecipientSchema(ma.Schema):
+    id = ma.Str()
+    transfer_enabled = ma.Boolean()
+    last_transfer = ma.Str()
+    transfer_interval = ma.Str()
+    transfer_day = ma.Int()
+    automatic_anticipation_enabled = ma.Boolean()
+    automatic_anticipation_type = ma.Str()
+    automatic_anticipation_days = ma.Str()
+    automatic_anticipation_1025_delay = ma.Int()
+    anticipatable_volume_percentage = ma.Int()
+    date_created = ma.Str()
+    date_updated = ma.Str()
+    bank_account = ma.Nested(BankSchema(), required=True)
 
 
 class BakerySchema(ma.Schema):
@@ -59,13 +76,12 @@ class BakerySchema(ma.Schema):
     name = ma.Str(required=True, validate=validate.Length(min=2, max=128))
     cnpj = ma.Str(validate=validate.Length(min=13, max=13))
     email = ma.Str(required=True, validate=validate.Length(min=2, max=128))
-    password = ma.Str(required=True, validate=validate.Length(
-        min=6, max=128), message="asdasd")
     phone = ma.Str(validate=validate.Length(min=13, max=13))
     status = ma.Str(validate=validate.Length(max=20))
     address_id = ma.Int()
     address = ma.Nested(AddressSchema(), required=True)
     bank = ma.Nested(BankSchema(), required=True)
+    pagarme_recipient = ma.Nested(BakeryPagarmeRecipientSchema())
     created_at = ma.DateTime()
     updated_at = ma.DateTime()
 
@@ -95,9 +111,13 @@ class UserSchema(ma.Schema):
     name = ma.Str(required=True, validate=validate.Length(min=2, max=128))
     lastname = ma.Str(required=True, validate=validate.Length(min=2, max=128))
     email = ma.Str(required=True, validate=validate.Length(min=2, max=128))
+    password = ma.Str(required=True, validate=validate.Length(
+        min=6, max=128))
     cpf = ma.Str(validate=validate.Length(min=11, max=11))
-    status = ma.Str(validate=validate.Length(max=20))
     phone = ma.Str(validate=validate.Length(min=13, max=13))
+    birth_date = ma.DateTime()
+    status = ma.Str(validate=validate.Length(max=20))
+    type = ma.Str(validate=validate.Length(max=20))
     address = ma.Nested(AddressSchema(many=True))
     created_at = ma.DateTime()
     updated_at = ma.DateTime()
@@ -114,3 +134,12 @@ class DeliverySchema(ma.Schema):
     address_id = ma.Int(required=True)
     created_at = ma.DateTime()
     updated_at = ma.DateTime()
+
+
+class LoginSchema(ma.Schema):
+    class Meta:
+        model = User
+
+    email = ma.Str(required=True, validate=validate.Length(min=2, max=128))
+    password = ma.Str(required=True, validate=validate.Length(
+        min=6, max=128))

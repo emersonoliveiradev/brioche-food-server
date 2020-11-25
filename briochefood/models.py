@@ -12,6 +12,9 @@ class User(db.Model, SerializerMixin):
     password = db.Column(db.String(128), nullable=False)
     cpf = db.Column(db.String(11), unique=True,)
     phone = db.Column(db.String(13))
+    birth_date = db.Column(db.DateTime)
+    type = db.Column(db.String(20), db.Enum(
+        'CUSTOMER', 'EMPLOYE', 'OWNER'), default='CUSTOMER', nullable=False)
     status = db.Column(db.String(20), db.Enum(
         'ACTIVE', 'BLOCKED'), default='ACTIVE', nullable=False)
     address = db.relationship("Address", secondary="users_addresses")
@@ -32,7 +35,7 @@ class Address(db.Model, SerializerMixin):
     district = db.Column(db.String(128))
     city = db.Column(db.String(128), nullable=False)
     state = db.Column(db.String(2), nullable=False)
-    cep = db.Column(db.String(8), nullable=False)
+    zipcode = db.Column(db.String(8), nullable=False)
     country = db.Column(db.String(128), default='Brasil', nullable=False)
     created_at = db.Column(
         db.DateTime, default=datetime.datetime.now, nullable=False)
@@ -79,7 +82,6 @@ class Bakery(db.Model, SerializerMixin):
     name = db.Column(db.String(128), nullable=False)
     cnpj = db.Column(db.String(13), default=None, unique=True)
     email = db.Column(db.String(128), unique=True, nullable=False)
-    password = db.Column(db.String(128), nullable=False)
     phone = db.Column(db.String(13))
     status = db.Column(db.String(20), db.Enum(
         'ACTIVE', 'INACTIVE', 'BLOCKED'), default='ACTIVE', nullable=False)
@@ -183,14 +185,3 @@ class Delivery(db.Model, SerializerMixin):
 
     def __repr__(self):
         return '{}'.format(self.id)
-
-
-"""
-agencia = db.Column(db.String(5), nullable=False)
-agencia_dv = db.Column(db.String(1))
-bank_code = db.Column(db.String(3), nullable=False)
-conta = db.Column(db.String(13), nullable=False)
-conta_dv = db.Column(db.String(2), nullable=False)
-document_number = db.Column(db.String(18), nullable=False)
-legal_name = db.Column(db.String(30), nullable=False)
-"""

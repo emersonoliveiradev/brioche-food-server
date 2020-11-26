@@ -203,7 +203,6 @@ Link do projeto: [https://github.com/emersonoliveiradev/brioche-food-server](htt
    
   <a href="https://www.linkedin.com/in/emerson-oliveira-4582b9123/" alt="Linkedin">
 <img src="https://img.shields.io/badge/-Emerson%20Oliveira-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/emerson-oliveira-4582b9123/" /></a>
-
 </p>
 
 

@@ -2,7 +2,6 @@ from flask_admin import Admin
 from flask_admin.base import AdminIndexView
 from flask_admin.contrib import sqla
 from flask_simplelogin import login_required
-
 from briochefood.ext.database import db
 from briochefood.models import Address, Bakery, Bank, Cart, Delivery, Product, Purchase, Order, User
 

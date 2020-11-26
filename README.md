@@ -115,7 +115,7 @@ Ps: Recomenda-se a criação e utilização de um ambiente virtual python previa
    ```
 3. Instale os pacotes via pip
    ```sh
-   $ pip install > requirements.txt
+   $ pip install -r requirements.txt
    ```
 4. Insira sua chave API em `settings.toml`
    ```JS

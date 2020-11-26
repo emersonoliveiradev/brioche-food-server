@@ -19,13 +19,16 @@ BriocheFood é uma aplicação criada para ser um marketplace de padarias, conec
 
 * Esta aplicação está em constante evolução e já conta com:
 
-  * Api Restful, pronta para ser consumida: http://127.0.0.1:5000/api/v1/'resource'    
+  * Api Restful, pronta para ser consumida: http://127.0.0.1:5000/api/v1/"resource"    
     * Criação de recebedores (padarias parceiras)
-    * Diversos recursos disponíveis através de seus endpoits, documentação disponível em: [PAGARME](https://pagar.me/)
+    * Diversos recursos disponíveis através de seus endpoints, documentação disponível em: [PAGARME](https://pagar.me/)
 
   * Integração com a API de pagamentos [PAGARME](https://pagar.me/) para:
     * Criação de recebedores (padarias parceiras)
-    * Transações 
+    * Transações (plataforma recebe 15% sobre cada transação e se resposabiliza pelo risco de fraude)
+      * Transações sem a necessidade de informar um cliente
+      * Transações com a necessidade de informar um cliente
+      <br/>ps: Atente-se ao fato de que para que seja possível realizar uma transação sem a necessidade de informar um cliente é necessário que a sua chave ANTIFRAUDE na plataforma da pagarme esteja desabilitada. 
 
   * Painel administrativo
     * Gerenciamento a nível de administrador para as entidades abaixo listadas mediante acesso em http://127.0.0.1:5000/admin/ com as credenciais name=Django e password=Livre<br/>
@@ -37,6 +40,11 @@ BriocheFood é uma aplicação criada para ser um marketplace de padarias, conec
       * Product<br/>
       * Purchase<br/>
       * User
+
+  * Documentação de apoio
+    * Dicionário de dados
+    * Diagrama de classes simplificado
+    * Documentação da api (possibilidade de importação no insominia)
 
 * O que a aplicação ainda não possui:
   * Aplicativo mobile ou website para consumo dos recursos
@@ -140,7 +148,7 @@ Ps: Recomenda-se a criação e utilização de um ambiente virtual python previa
    run          Run a development server.
    shell        Run a shell in the app context.
    ```
-  * Especialmente para criação de uma base de dados simples através do comando:
+  * Especialmente para criação de uma base de dados simples contendo alguns através do comando:
   ```sh
    $ flask populate-db
    ```
@@ -153,11 +161,18 @@ Endpoits da api disponíveies em: [Acessar](https://pagar.me/)
 
 <!-- USAGE EXAMPLES -->
 ## Uso
-Atente-se ao fato de que para que seja possível realizar uma transação sem a necessidade de informar um usuário é necessário que a sua chave ANTIFRAUDE na plataforma da pagarme esteja desabilitada. 
+
+O fluxo natural principal de cadastros através da api se dá pelo:<br/>
+Cadastro de uma padaria - {{ base_url  }}/bakeries/<br/>
+Cadastro de produtos para a padaria - {{ base_url  }}/products/<br/>
+Cadastro de um cliente (não obrigatório) - {{ base_url  }}/register<br/>
+Registro de um pedido (Purchase -> Checkout) - {{ base_url  }}/purchases/<br/>
+Alteração do status da entrega referente ao pedido - {{ base_url  }}/deliveries/
+<br/>
 
 
 <!-- CONTRIBUTING -->
-## Contribuindo
+## Contribuir
 
 Caso queira contribuir com este projeto basta seguir as instruções abaixo:
 

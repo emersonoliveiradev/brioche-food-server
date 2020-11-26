@@ -43,7 +43,7 @@ class PurchaseResource(Resource):
                     id=data['bakery_id']).first() or abort(404, "User not found")
                 customer = {
                     "external_id": str(user.id),
-                    "name": user.name,
+                    "name": user.name + ' ' + user.lastname,
                     "type": "individual",
                     "country": "br",
                     "email": user.email,
@@ -58,7 +58,7 @@ class PurchaseResource(Resource):
                 }
 
                 billing = {
-                    "name": user.name,
+                    "name": user.name + ' ' + user.lastname,
                     "address": {
                         "country": user.address[0].country,
                         "state": user.address[0].state,
@@ -71,7 +71,7 @@ class PurchaseResource(Resource):
                 }
 
                 shipping = {
-                    "name": user.name,
+                    "name": user.name + ' ' + user.lastname,
                     "fee": 0,
                     "delivery_date": datetime.now().strftime('%Y-%m-%d'),
                     "expedited": True,
@@ -152,7 +152,7 @@ class PurchaseResource(Resource):
             pagarme.authentication_key(
                 current_app.config.get('PAGARME_API_KEY'))
             trx = pagarme.transaction.create(purchase_pagarme)
-            print(trx)
+
             purchase = Purchase(total_paid=total_paid,
                                 bakery_received=bakery_received,
                                 startup_received=startup_received,

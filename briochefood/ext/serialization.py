@@ -118,7 +118,7 @@ class UserSchema(ma.Schema):
     birth_date = ma.DateTime()
     status = ma.Str(validate=validate.Length(max=20))
     type = ma.Str(validate=validate.Length(max=20))
-    address = ma.Nested(AddressSchema(many=True))
+    address = ma.Nested(AddressSchema(many=False))
     created_at = ma.DateTime()
     updated_at = ma.DateTime()
 

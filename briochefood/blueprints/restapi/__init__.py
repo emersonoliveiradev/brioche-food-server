@@ -7,7 +7,7 @@ from .cart.routes import CartResource, CartItemResource
 from .delivery.routes import DeliveryResource, DeliveryItemResource
 from .product.routes import ProductResource, ProductItemResource
 from .purchase.routes import PurchaseResource, PurchaseItemResource
-from .user.routes import UserResource, UserItemResource, UserLoginResource
+from .user.routes import UserResource, UserItemResource, UserLoginResource, UserRegisterResource
 
 
 bp = Blueprint("restapi", __name__, url_prefix="/api/v1")
@@ -39,6 +39,7 @@ api.add_resource(PurchaseItemResource, "/purchase/<purchase_id>")
 api.add_resource(UserResource, "/users/")
 api.add_resource(UserItemResource, "/user/<user_id>")
 api.add_resource(UserLoginResource, "/login/")
+api.add_resource(UserRegisterResource, "/register/")
 
 
 def init_app(app):

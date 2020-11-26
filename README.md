@@ -8,7 +8,7 @@
   <h3 align="center">BriocheFood</h3>
 
   <p align="center">
-    Quer saborear aquele pão quentinho feito nas principais padarias da sua cidade? Experimente agora a solução BriocheFood e receba em casa, no trabalho ou em qualquer lugar a sua delícia panificada.
+    Quer saborear aquele pão quentinho feito nas principais padarias da sua cidade? Experimente a solução BriocheFood e receba em casa, no trabalho ou em qualquer lugar a sua delícia panificada.
   </p>
 </p>
 
@@ -19,9 +19,8 @@ BriocheFood é uma aplicação criada para ser um marketplace de padarias, conec
 
 * Esta aplicação está em constante evolução e já conta com:
 
-  * Api Restful, pronta para ser consumida: http://127.0.0.1:5000/api/v1/"resource"    
-    * Criação de recebedores (padarias parceiras)
-    * Diversos recursos disponíveis através de seus endpoints, documentação disponível em: [PAGARME](https://pagar.me/)
+  * Api Restful, pronta para ser consumida:     
+    * Diversos recursos disponíveis através de seus endpoints, documentação disponível em: [apidoc](https://brioche-food-apidoc.vercel.app/)
 
   * Integração com a API de pagamentos [PAGARME](https://pagar.me/) para:
     * Criação de recebedores (padarias parceiras)

@@ -17,13 +17,11 @@ def populate_db():
     """Populate db with sample data"""
     data = [
         Address(id=1, street='Gonçalo Carvalho', number=33, complement='Apartamento', district='Floresta',
-                city='Porto Alegre', zipcode='90035170', state='RS', country='Brasil', created_at=datetime.now(), updated_at=None),
+                city='Porto Alegre', zipcode='90035170', state='rs', country='br', created_at=datetime.now(), updated_at=None),
         Address(id=2, street='Gonçalo Carvalho', number=66, complement='Apartamento', district='Floresta',
-                city='Porto Alegre', zipcode='90035170', state='RS', country='Brasil', created_at=datetime.now(), updated_at=None),
-
+                city='Porto Alegre', zipcode='90035170', state='rs', country='br', created_at=datetime.now(), updated_at=None),
         Bank(id=1, pagarme_bank_account_id=18494661,
              created_at=datetime.now(), updated_at=None),
-
         Bakery(id=1, name='Pão Dourado', pagarme_recipient_id='re_ckhv594pe0ozy0i9tctmr88cz', cnpj='1234567890123', email='paodourado@gmail.com',
                phone='5538998411815', status='ACTIVE', bank_id=1, address_id='1', created_at=datetime.now(), updated_at=None),
         Product(id=1, title='Pão Francês', description='Pão comum a base de farinha, sal, água e fermento.',
@@ -32,13 +30,13 @@ def populate_db():
                 unit_price=0.85, quantity=90, tangible=True, status='ACTIVE', bakery_id=1, created_at=datetime.now(), updated_at=None),
         Product(id=3, title='Pão Doce Especial', description='Pão doce de textura macia e sabor de canela com geléia.',
                 unit_price=0.65, quantity=120, tangible=True, status='ACTIVE', bakery_id=1, created_at=datetime.now(), updated_at=None),
-        User(id=1, name='Emerson', lastname='Oliveira', email='emersonoliveiradev@gmail.com', password="123456",
-             cpf="21496453000", phone='5538998411815', birth_date=datetime.now(), type="CUSTOMER", status='ACTIVE', created_at=datetime.now(), updated_at=None),
+        User(id=1, name='Emerson', lastname='Oliveira', email='emersonoliveiradev@gmail.com', password="123456", cpf="38785356000",
+             phone='5538998411815', birth_date=datetime.now(), type="CUSTOMER", status='ACTIVE', created_at=datetime.now(), updated_at=None),
         User_Address(user_id=1, address_id=2),
-        User(id=2, name='Amelia', lastname='Brand', email='ameliabrand@gmail.com', password="123456",
+        User(id=2, name='Amelia', lastname='Brand', email='ameliabrand@gmail.com', password="123456", cpf="65958487086",
              phone='5538998411815', birth_date=datetime.now(), type="EMPLOYE", status='ACTIVE', created_at=datetime.now(), updated_at=None),
         User_Address(user_id=2, address_id=2),
-        User(id=3, name='Joseph', lastname='Cooper', email='josephcooper@gmail.com', password="123456",
+        User(id=3, name='Joseph', lastname='Cooper', email='josephcooper@gmail.com', password="123456", cpf="04594145000",
              phone='5538998411815', birth_date=datetime.now(), type="OWNER", status='ACTIVE', created_at=datetime.now(), updated_at=None),
         Cart(id=1, note='Prioridade máxima na entrega por favor',
              bakery_id=1, user_id=1, created_at=datetime.now(), updated_at=None),

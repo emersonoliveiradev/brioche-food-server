@@ -1,9 +1,9 @@
 [default]
+DEBUG = "TRUE"
+TITLE = "BriocheFood"
 SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
 SECRET_KEY = "iwillbeback"
 JWT_SECRET_KEY = "iwillbebackagain"
-TITLE = "BriocheFood"
-DEBUG = "TRUE"
 EXTENSIONS = [
   "briochefood.ext.appearance",
   "briochefood.ext.database",
@@ -20,4 +20,22 @@ PAGARME_API_KEY = "ak_test_KYhYBf7mN1NYX5G92QcwQyTMRMtX7A"
 PAGARME_ENCRYPTATION_KEY = "ek_test_XpiTJcB0288PaEwxsxXsJgKWiPh3Ny"
 
 [production]
-SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"
+DEBUG = "False"
+TITLE = "BriocheFood"
+SQLALCHEMY_DATABASE_URI = "sqlite:///production.db"
+SECRET_KEY = "iwillbeback"
+JWT_SECRET_KEY = "iwillbebackagain"
+EXTENSIONS = [
+  "briochefood.ext.appearance",
+  "briochefood.ext.database",
+  "briochefood.ext.migration",
+  "briochefood.ext.auth",
+  "briochefood.ext.auth_jwt",
+  "briochefood.ext.admin",
+  "briochefood.ext.commands",
+  "briochefood.blueprints.webui",
+  "briochefood.blueprints.restapi",
+  "briochefood.ext.serialization",
+]
+PAGARME_API_KEY = ""
+PAGARME_ENCRYPTATION_KEY = ""

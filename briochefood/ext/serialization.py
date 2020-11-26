@@ -1,6 +1,6 @@
 from marshmallow import validate
 from flask_marshmallow import Marshmallow
-from briochefood.models import Address, Bakery, Bank, Cart, Product, Purchase, User
+from briochefood.models import Address, Bakery, Bank, Cart, Delivery, Product, Purchase, User
 
 ma = Marshmallow()
 
@@ -137,9 +137,17 @@ class CartSchema(ma.Schema):
     updated_at = ma.DateTime()
 
 
+class UpdateDeliverySchema(ma.Schema):
+    class Meta:
+        model = Delivery
+
+    id = ma.Int()
+    status = ma.Str(required=True, validate=validate.Length(max=20))
+
+
 class DeliverySchema(ma.Schema):
     class Meta:
-        model = Address
+        model = Delivery
 
     id = ma.Int()
     status = ma.Str(required=True, validate=validate.Length(max=20))
@@ -212,7 +220,10 @@ class PurchaseSchema(ma.Schema):
     cart = ma.Nested(CartSchema())
     user_id = ma.Int()
     note = ma.Str(validate=validate.Length(max=128))
-    amount = ma.Int(required=True,)
+    amount = ma.Int()
+    total_paid = ma.Float()
+    bakery_received = ma.Float()
+    startup_received = ma.Float()
     card_number = ma.Str(
         required=True, validate=validate.Length(min=16, max=16))
     card_cvv = ma.Str(required=True, validate=validate.Length(min=1, max=3))

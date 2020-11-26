@@ -1,8 +1,9 @@
 from flask import abort, current_app
 from flask_restful import Resource, request
+from flask_jwt_extended import jwt_required
 from briochefood.ext.database import db
-from briochefood.ext.serialization import BakerySchema
-from briochefood.models import Address, Bakery, Bank
+from briochefood.ext.serialization import BakerySchema, ProductSchema
+from briochefood.models import Address, Bakery, Bank, Product
 
 import pagarme
 
@@ -14,6 +15,7 @@ class BakeryResource(Resource):
         schema = BakerySchema(many=True)
         return schema.jsonify(bakeries)
 
+    @jwt_required
     def post(self):
         """Create a new bakery"""
         try:
@@ -81,6 +83,7 @@ class BakeryItemResource(Resource):
 
 
 class BakeryDetailResource(Resource):
+    @jwt_required
     def get(self, bakery_id):
         """Detail bakery"""
         pagarme.authentication_key(
@@ -96,3 +99,12 @@ class BakeryDetailResource(Resource):
 
         schema = BakerySchema(many=False)
         return schema.jsonify(bakery)
+
+
+class ProductsByBakeryResource(Resource):
+    def get(self, bakery_id):
+        """Get all products by bakery"""
+        products = Product.query.filter_by(
+            bakery_id=bakery_id) or abort(204, "No items found")
+        schema = ProductSchema(many=True)
+        return schema.jsonify(products)

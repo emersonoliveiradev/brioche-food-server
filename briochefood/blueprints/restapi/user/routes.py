@@ -1,7 +1,6 @@
 from flask import abort
 from flask_restful import Resource, request
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required
-
 from briochefood.models import User
 from briochefood.ext.serialization import LoginSchema, UserSchema
 

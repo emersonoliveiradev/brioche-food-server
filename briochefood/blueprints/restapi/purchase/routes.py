@@ -1,8 +1,10 @@
+from datetime import datetime
 from flask import abort, current_app, jsonify
 from flask_restful import Resource, request
+from flask_jwt_extended import jwt_required
 from briochefood.ext.database import db
 from briochefood.ext.serialization import PurchaseSchema
-from briochefood.models import Bakery, Cart, Order, Product, Purchase
+from briochefood.models import Bakery, Cart, Order, Product, Purchase, User
 import pagarme
 
 
@@ -11,9 +13,9 @@ split_rules = [
         "recipient_id": "re_ckhrqo2gs0f730h9tsqj4qupd",
         "percentage": 15,
         "liable": True,
-        "charge_processing_fee": True
+        "charge_processing_fee": False
     }, {
-        "recipient_id": "re_ckhrqo2gs0f730h9tsqj4qupd",
+        "recipient_id": "",
         "percentage": 85,
         "liable": False,
         "charge_processing_fee": True
@@ -22,11 +24,11 @@ split_rules = [
 
 
 class PurchaseResource(Resource):
+    @jwt_required
     def get(self):
         purchases = Purchase.query.all() or abort(204, "No items found")
-        return jsonify(
-            {"purchases": [purchase.to_dict() for purchase in purchases]}
-        )
+        schema = PurchaseSchema(many=True)
+        return schema.jsonify(purchases)
 
     def post(self):
         try:
@@ -35,6 +37,54 @@ class PurchaseResource(Resource):
 
             bakery = Bakery.query.filter_by(
                 id=data['bakery_id']).first() or abort(404, "Bakery not found")
+
+            if data.get('user_id'):
+                user = User.query.filter_by(
+                    id=data['bakery_id']).first() or abort(404, "User not found")
+                customer = {
+                    "external_id": str(user.id),
+                    "name": user.name,
+                    "type": "individual",
+                    "country": "br",
+                    "email": user.email,
+                    "documents": [
+                        {
+                            "type": "cpf",
+                            "number": user.cpf,
+                        }
+                    ],
+                    "phone_numbers": ["+" + user.phone],
+                    "birthday": user.birth_date.strftime('%Y-%m-%d')
+                }
+
+                billing = {
+                    "name": user.name,
+                    "address": {
+                        "country": user.address[0].country,
+                        "state": user.address[0].state,
+                        "city": user.address[0].city,
+                        "neighborhood": user.address[0].district,
+                        "street": user.address[0].street,
+                        "street_number": str(user.address[0].number),
+                        "zipcode": user.address[0].zipcode
+                    }
+                }
+
+                shipping = {
+                    "name": user.name,
+                    "fee": 0,
+                    "delivery_date": datetime.now().strftime('%Y-%m-%d'),
+                    "expedited": True,
+                    "address": {
+                        "country": user.address[0].country,
+                        "state": user.address[0].state,
+                        "city": user.address[0].city,
+                        "neighborhood": user.address[0].district,
+                        "street": user.address[0].street,
+                        "street_number": str(user.address[0].number),
+                        "zipcode": user.address[0].zipcode
+                    }
+                }
 
             cart = Cart(note=data.get('note', None),
                         bakery_id=data['bakery_id'],
@@ -73,71 +123,46 @@ class PurchaseResource(Resource):
             bakery_received = total_paid * 85 / 100
             startup_received = total_paid - bakery_received
 
-            purchase_pagarme = {
-                "amount": amount,
-                "card_number": data['card_number'],
-                "card_cvv": data['card_cvv'],
-                "card_expiration_date": data['card_expiration_date'],
-                "card_holder_name": data['card_holder_name'],
-                "items": items,
-                "split_rules": split_rules,
-                "customer": {
-                    "external_id": "3311",
-                    "name": "Morpheus Fishburne",
-                    "type": "individual",
-                    "country": "br",
-                    "email": "mopheus@nabucodonozor.com",
-                    "documents": [
-                        {
-                            "type": "cpf",
-                            "number": "12568061618"
-                        }
-                    ],
-                    "phone_numbers": ["+5511999998888", "+5511888889999"],
-                    "birthday": "1965-01-01"
-                },
-                "billing": {
-                    "name": "Trinity Moss",
-                    "address": {
-                        "country": "br",
-                        "state": "sp",
-                        "city": "Cotia",
-                        "neighborhood": "Rio Cotia",
-                        "street": "Rua Matrix",
-                        "street_number": "9999",
-                        "zipcode": "06714360"
-                    }
-                },
-                "shipping": {
-                    "name": "Neo Reeves",
-                    "fee": 0,
-                    "delivery_date": "2000-12-21",
-                    "expedited": True,
-                    "address": {
-                        "country": "br",
-                        "state": "sp",
-                        "city": "Cotia",
-                        "neighborhood": "Rio Cotia",
-                        "street": "Rua Matrix",
-                        "street_number": "9999",
-                        "zipcode": "06714360"
-                    }
-                },
-            }
+            split_rules[1]['recipient_id'] = bakery.pagarme_recipient_id
+
+            if data.get('user_id'):
+                purchase_pagarme = {
+                    "amount": amount,
+                    "card_number": data['card_number'],
+                    "card_cvv": data['card_cvv'],
+                    "card_expiration_date": data['card_expiration_date'],
+                    "card_holder_name": data['card_holder_name'],
+                    "items": items,
+                    "split_rules": split_rules,
+                    "customer": customer,
+                    "billing": billing,
+                    "shipping": shipping,
+                }
+            else:
+                purchase_pagarme = {
+                    "amount": amount,
+                    "card_number": data['card_number'],
+                    "card_cvv": data['card_cvv'],
+                    "card_expiration_date": data['card_expiration_date'],
+                    "card_holder_name": data['card_holder_name'],
+                    "items": items,
+                    "split_rules": split_rules,
+                }
 
             pagarme.authentication_key(
                 current_app.config.get('PAGARME_API_KEY'))
             trx = pagarme.transaction.create(purchase_pagarme)
-
+            print(trx)
             purchase = Purchase(total_paid=total_paid,
                                 bakery_received=bakery_received,
                                 startup_received=startup_received,
                                 percentage_charged=percentage_charged,
                                 status='PAID',
                                 cart_id=cart.id)
+
             db.session.add(purchase)
             db.session.flush()
-            # db.session.commit()
+            db.session.commit()
 
             return schema.jsonify(purchase)
         except Exception as e:
@@ -146,6 +171,7 @@ class PurchaseResource(Resource):
 
 
 class PurchaseItemResource(Resource):
+    @jwt_required
     def get(self, purchase_id):
         purchase = Purchase.query.filter_by(
             id=purchase_id).first() or abort(404, "Item not found")

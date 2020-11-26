@@ -1,5 +1,6 @@
 from flask import abort
 from flask_restful import Resource, request
+from flask_jwt_extended import jwt_required
 from briochefood.models import Product
 from briochefood.ext.database import db
 from briochefood.ext.serialization import ProductSchema
@@ -12,6 +13,7 @@ class ProductResource(Resource):
         schema = ProductSchema(many=True)
         return schema.jsonify(products)
 
+    @jwt_required
     def post(self):
         """Create a new product"""
         try:

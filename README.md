@@ -15,10 +15,31 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Sobre o projeto
-BriocheFood é uma aplicação criada para ser um marketplace de padarias, conectando estabelecimentos e clientes de maneira simples e eficiente 🚀. Esta aplicação ainda em desenvolvimento, já conta com:
-* Integração com a API de pagamentos [PAGARME](https://pagar.me/)
-* Painel administrativo
-* Api Restful 
+BriocheFood é uma aplicação criada para ser um marketplace de padarias, conectando estabelecimentos e clientes de maneira simples e eficiente 🚀. 
+
+* Esta aplicação está em constante evolução e já conta com:
+
+  * Api Restful, pronta para ser consumida: http://127.0.0.1:5000/api/v1/'resource'    
+    * Criação de recebedores (padarias parceiras)
+    * Diversos recursos disponíveis através de seus endpoits, documentação disponível em: [PAGARME](https://pagar.me/)
+
+  * Integração com a API de pagamentos [PAGARME](https://pagar.me/) para:
+    * Criação de recebedores (padarias parceiras)
+    * Transações 
+
+  * Painel administrativo
+    * Gerenciamento a nível de administrador para as entidades abaixo listadas mediante acesso em http://127.0.0.1:5000/admin/ com as credenciais name=Django e password=Livre<br/>
+      * Address<br/>
+      * Bakery<br/>
+      * Cart<br/>
+      * Delivery<br/>
+      * Order<br/>
+      * Product<br/>
+      * Purchase<br/>
+      * User
+
+* O que a aplicação ainda não possui:
+  * Aplicativo mobile ou website para consumo dos recursos
 
 ### Construído com
 Principais tecnologias utilizadas:
@@ -40,12 +61,13 @@ Principais tecnologias utilizadas:
 
 Este é um exemplo de como você pode configurar seu projeto localmente. Para obter uma cópia local instalada e funcionando, siga os passos:
 
-### Pré-requisitos
+### Pré-requisitos do sistema
 
-Requisitos necessários precisa para usar o software e como instalá-las.
+Requisitos necessários para executar o projeto e como instalar caso ainda não possua.
 * Em sistemas operacionais Linux baseados em Debian (Recomendado Ubuntu 19.04 ou superior):
   ```sh
   sudo apt update
+  sudo apt install git
   sudo apt install python3.7
   sudo apt install python3-pip
   ```
@@ -54,25 +76,29 @@ Requisitos necessários precisa para usar o software e como instalá-las.
 Ps: Recomenda-se a criação e utilização de um ambiente virtual python previamente definido com a versão python padrão utilizada (python 3.7). 
 
 * Instalação do pacote Virtualenvwrapper<br/>
-  
-  Adicione ao final do arquivo ~/.bash_profile as linhas a seguir:
-   ```sh   
-    pip install virtualenvwrapper
+  Execute:
+  ```sh       
+    $ pip install virtualenvwrapper
+   ```
+
+  Então adicione ao final do arquivo ~/.bash_profile as linhas a seguir:
+   ```sh       
     export WORKON_HOME=~/.virtualenvs
     source /usr/local/bin/virtualenvwrapper.sh
    ```
 
-* Criação e utilização do ambiente virtual
+* Criação e uso do ambiente virtual
    ```sh   
-   mkvirtualenv nome_do_ambiente 
-   workon nome_do_ambiente --python=/usr/local/bin/python3.7
+   $ mkvirtualenv nome_do_ambiente 
+   $ workon nome_do_ambiente --python=/usr/local/bin/python3.7
    
    # Para sair do ambiente virtual
-   deactivate
+   $ deactivate
   ```
 
 ### Instalação
-1. Obtenha uma chave API gratuíta em [https://pagar.me/precos/](https://pagar.me/precos/)
+1. Obtenha uma chave API gratuíta em [https://pagar.me/precos/](https://pagar.me/precos/) 
+    * Lembre-se de utilizar a chave API de testes.
 
 2. Clone o repositório
    ```sh
@@ -122,11 +148,12 @@ Ps: Recomenda-se a criação e utilização de um ambiente virtual python previa
 <!-- ADITIONAL DOCUMENTATION -->
 ## Documentação adicional
 Dicionário de dados:  [Acessar](https://example.com) <br/>
-Diagrama de classes:  [Acessar](https://example.com) <br/>
+Diagrama de classes simplificado:  [Acessar](https://example.com) <br/>
+Endpoits da api disponíveies em: [Acessar](https://pagar.me/)
 
 <!-- USAGE EXAMPLES -->
 ## Uso
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Atente-se ao fato de que para que seja possível realizar uma transação sem a necessidade de informar um usuário é necessário que a sua chave ANTIFRAUDE na plataforma da pagarme esteja desabilitada. 
 
 
 <!-- CONTRIBUTING -->

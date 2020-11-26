@@ -1,17 +1,20 @@
 from flask import abort
 from flask_restful import Resource, request
+from flask_jwt_extended import jwt_required
 from briochefood.models import Cart
 from briochefood.ext.database import db
 from briochefood.ext.serialization import CartSchema
 
 
 class CartResource(Resource):
+    @jwt_required
     def get(self):
         """Get all carts"""
         carts = Cart.query.all() or abort(204, "No items found")
         schema = CartSchema(many=True)
         return schema.jsonify(carts)
 
+    @jwt_required
     def post(self):
         """Create a new cart"""
         try:
@@ -30,6 +33,7 @@ class CartResource(Resource):
 
 
 class CartItemResource(Resource):
+    @jwt_required
     def get(self, cart_id):
         """Get cart"""
         cart = Cart.query.filter_by(

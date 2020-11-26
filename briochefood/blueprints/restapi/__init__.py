@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_restful import Api
 from .address.routes import AddressResource, AddressItemResource
-from .bakery.routes import BakeryResource, BakeryItemResource, BakeryDetailResource
+from .bakery.routes import BakeryResource, BakeryItemResource, BakeryDetailResource, ProductsByBakeryResource
 from .bank.routes import BankResource, BankItemResource, BankDetailResource
 from .cart.routes import CartResource, CartItemResource
 from .delivery.routes import DeliveryResource, DeliveryItemResource
@@ -22,6 +22,7 @@ api.add_resource(BankDetailResource, "/bank/<bank_id>/detail")
 api.add_resource(BakeryResource, "/bakeries/")
 api.add_resource(BakeryItemResource, "/bakery/<bakery_id>")
 api.add_resource(BakeryDetailResource, "/bakery/<bakery_id>/detail")
+api.add_resource(ProductsByBakeryResource, "/bakery/<bakery_id>/products")
 
 api.add_resource(CartResource, "/carts/")
 api.add_resource(CartItemResource, "/cart/<cart_id>")

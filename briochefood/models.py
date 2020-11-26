@@ -10,11 +10,14 @@ class User(db.Model, SerializerMixin):
     lastname = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(128), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
-    cpf = db.Column(db.String(11), unique=True,)
-    phone = db.Column(db.String(13))
-    birth_date = db.Column(db.DateTime)
+    cpf = db.Column(db.String(11), unique=True, nullable=False)
+    phone = db.Column(db.String(13), nullable=False)
+    birth_date = db.Column(db.DateTime, nullable=False)
     type = db.Column(db.String(20), db.Enum(
         'CUSTOMER', 'EMPLOYE', 'OWNER'), default='CUSTOMER', nullable=False)
+    bakery_id = db.Column(db.Integer, db.ForeignKey(
+        'bakeries.id'), default=None)
+    bakery = db.relationship("Bakery", backref="users")
     status = db.Column(db.String(20), db.Enum(
         'ACTIVE', 'BLOCKED'), default='ACTIVE', nullable=False)
     address = db.relationship("Address", secondary="users_addresses")
@@ -29,14 +32,14 @@ class User(db.Model, SerializerMixin):
 class Address(db.Model, SerializerMixin):
     __tablename__ = 'addresses'
     id = db.Column(db.Integer, primary_key=True)
-    street = db.Column(db.String(128))
-    number = db.Column(db.Integer())
-    complement = db.Column(db.String(128))
-    district = db.Column(db.String(128))
+    street = db.Column(db.String(128), nullable=False)
+    number = db.Column(db.Integer(), nullable=False)
+    complement = db.Column(db.String(128), nullable=False)
+    district = db.Column(db.String(128), nullable=False)
     city = db.Column(db.String(128), nullable=False)
     state = db.Column(db.String(2), nullable=False)
     zipcode = db.Column(db.String(8), nullable=False)
-    country = db.Column(db.String(128), default='Brasil', nullable=False)
+    country = db.Column(db.String(2), default='br', nullable=False)
     created_at = db.Column(
         db.DateTime, default=datetime.datetime.now, nullable=False)
     updated_at = db.Column(db.DateTime, default=None)

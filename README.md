@@ -20,7 +20,7 @@ BriocheFood é uma aplicação criada para ser um marketplace de padarias, conec
 * Esta aplicação está em constante evolução e já conta com:
 
   * Api Restful, pronta para ser consumida:     
-    * Diversos recursos disponíveis através de seus endpoints, documentação disponível em: [apidoc](https://brioche-food-apidoc.vercel.app/)
+    * Diversos recursos disponíveis através de seus endpoints, documentação disponível em: [BriocheFood apidoc](https://brioche-food-apidoc.vercel.app/)
 
   * Integração com a API de pagamentos [PAGARME](https://pagar.me/) para:
     * Criação de recebedores (padarias parceiras)
@@ -40,10 +40,10 @@ BriocheFood é uma aplicação criada para ser um marketplace de padarias, conec
       * Purchase<br/>
       * User
 
-  * Documentação de apoio
+  * Documentação de apoio (Confira em na pasta doc deste repositório)
     * Dicionário de dados
     * Diagrama de classes simplificado
-    * Documentação da api (possibilidade de importação no insominia)
+    * Documentação da api 
 
 * O que a aplicação ainda não possui:
   * Aplicativo mobile ou website para consumo dos recursos
@@ -59,6 +59,7 @@ Principais tecnologias utilizadas:
 * [Flask-Marshmallow](https://flask-marshmallow.readthedocs.io/en/latest)
 * [Flask-Migrate](https://flask-migrate.readthedocs.io/en/latest/)
 * [Flask-Restful](https://flask-restful.readthedocs.io/en/latest/)
+* [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/stable/)
 * [Flask-SimpleLogin](https://flask-simple-login.readthedocs.io/en/latest/?badge=latest)
 * [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 
@@ -154,9 +155,12 @@ Ps: Recomenda-se a criação e utilização de um ambiente virtual python previa
 
 <!-- ADITIONAL DOCUMENTATION -->
 ## Documentação adicional
-Dicionário de dados:  [Acessar](https://example.com) <br/>
-Diagrama de classes simplificado:  [Acessar](https://example.com) <br/>
-Endpoits da api disponíveies em: [Acessar](https://pagar.me/)
+Dicionário de dados:  [Acessar](https://github.com/emersonoliveiradev/brioche-food-server/blob/main/doc/Dicionario-de-dados-BriocheFood.pdf) <br/>
+Diagrama de classes simplificado:  [Acessar](https://github.com/emersonoliveiradev/brioche-food-server/blob/main/doc/DiagramaClassesRelacionamento.pdf) <br/>
+Endpoits da api disponíveies em: [Acessar](https://brioche-food-apidoc.vercel.app/)<br/>
+Arquivo json insomina para importação local: [Acessar](https://github.com/emersonoliveiradev/brioche-food-server/blob/main/doc/briochedfood-Insomnia-emerson-oliveira.json)<br/>
+
+
 
 <!-- USAGE EXAMPLES -->
 ## Uso
